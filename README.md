@@ -1,250 +1,504 @@
-# smithery-mcp-python-template 🐍⚡
+# data.gov.in MCP Server
 
-[![smithery badge](https://smithery.ai/badge/@Yash-Kavaiya/smithery-mcp-python-template)](https://smithery.ai/server/@Yash-Kavaiya/smithery-mcp-python-template)
-![Python](https://img.shields.io/badge/python-3.12+-blue.svg)
-![MCP](https://img.shields.io/badge/MCP-Compatible-green.svg)
-![Docker](https://img.shields.io/badge/docker-ready-blue.svg)
+[![Python](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
+[![MCP](https://img.shields.io/badge/MCP-Compatible-green.svg)](https://modelcontextprotocol.io)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Docker](https://img.shields.io/badge/docker-ready-blue.svg)](Dockerfile)
 
-## 📋 Overview
+A **production-ready** Model Context Protocol (MCP) server for accessing Indian government open data from [data.gov.in](https://data.gov.in). This server enables AI agents and applications to seamlessly query, filter, and retrieve datasets from India's national data portal.
 
-A comprehensive Python template for building **Model Context Protocol (MCP)** servers using **FastMCP**. This template provides a solid foundation for creating AI-native services that communicate seamlessly with AI agents and clients.
-
-## 🌟 Features
+## Features
 
 | Feature | Description | Status |
 |---------|-------------|--------|
-| 🚀 **FastMCP Integration** | Built with FastMCP for efficient server implementation | ✅ Ready |
-| 🔧 **STDIO Transport** | Standard I/O based communication protocol | ✅ Ready |
-| 🐳 **Docker Support** | Containerized deployment with optimized Dockerfile | ✅ Ready |
-| 📦 **Smithery Compatible** | Full integration with Smithery platform | ✅ Ready |
-| 🛠️ **Template Commands** | Pre-built greeting and math operations | ✅ Ready |
+| Dataset Retrieval | Access datasets using resource IDs | ✅ Ready |
+| Pagination | Navigate large datasets efficiently | ✅ Ready |
+| Filtering | Filter data by field values | ✅ Ready |
+| Field Schema | Get dataset structure and field types | ✅ Ready |
+| Response Caching | LRU cache with TTL for performance | ✅ Ready |
+| Rate Limiting | Automatic rate limiting with backoff | ✅ Ready |
+| Error Handling | Comprehensive error handling and retries | ✅ Ready |
+| Logging | Structured logging for monitoring | ✅ Ready |
+| Type Safety | Full type hints throughout | ✅ Ready |
+| Test Coverage | Comprehensive test suite | ✅ Ready |
+| Docker Support | Production-ready containerization | ✅ Ready |
 
-## 🏗️ Architecture
+## Table of Contents
 
-```mermaid
-graph TB
-    A[🧠 AI Client] --> B[📡 MCP Protocol]
-    B --> C[🐍 FastMCP Server]
-    C --> D[💬 Hello Command]
-    C --> E[➕ Add Command]
-    F[🐳 Docker Container] --> C
-    G[📋 Smithery Platform] --> F
-```
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Configuration](#configuration)
+- [Available Tools](#available-tools)
+- [Usage Examples](#usage-examples)
+- [Development](#development)
+- [Testing](#testing)
+- [Docker Deployment](#docker-deployment)
+- [API Documentation](#api-documentation)
+- [Architecture](#architecture)
+- [Contributing](#contributing)
+- [License](#license)
 
-## 🚀 Quick Start
+## Installation
 
-### Prerequisites 📋
-- 🐍 Python 3.12+
-- 📦 uv (recommended) or pip
-- 🐳 Docker (optional)
+### Prerequisites
 
-### Installation 💾
+- Python 3.12 or higher
+- `uv` package manager (recommended) or `pip`
+- data.gov.in API key ([Get one here](https://data.gov.in))
 
-#### Method 1: Direct Installation
+### Using uv (Recommended)
+
 ```bash
 # Clone the repository
-git clone https://github.com/Yash-Kavaiya/smithery-mcp-python-template.git
-cd smithery-mcp-python-template
+git clone https://github.com/Yash-Kavaiya/data-gov-in-mcp.git
+cd data-gov-in-mcp
 
 # Install dependencies
 uv sync
-# or with pip: pip install -e .
+
+# Set up your API key
+export DATA_GOV_IN_API_KEY="your-api-key-here"
 ```
 
-#### Method 2: Using Smithery CLI
+### Using pip
+
 ```bash
-# Install via Smithery
-npx @smithery/cli install @Yash-Kavaiya/smithery-mcp-python-template
+# Clone the repository
+git clone https://github.com/Yash-Kavaiya/data-gov-in-mcp.git
+cd data-gov-in-mcp
+
+# Install dependencies
+pip install -e .
+
+# Set up your API key
+export DATA_GOV_IN_API_KEY="your-api-key-here"
 ```
 
-## 🎮 Available Commands
+### Using Docker
 
-### 💬 Hello Command
-```json
-{
-  "name": "hello",
-  "description": "A simple command that returns a greeting message",
-  "parameters": {
-    "name": {
-      "type": "string",
-      "description": "The name of the person to greet",
-      "required": true
-    }
-  }
-}
-```
-
-**Example Usage:**
-```python
-# Returns: "Hello, World!"
-hello(name="World")
-```
-
-### ➕ Add Command
-```json
-{
-  "name": "add",
-  "description": "A command that adds two integers",
-  "parameters": {
-    "a": {
-      "type": "integer",
-      "description": "The first integer",
-      "required": true
-    },
-    "b": {
-      "type": "integer", 
-      "description": "The second integer",
-      "required": true
-    }
-  }
-}
-```
-
-**Example Usage:**
-```python
-# Returns: 7
-add(a=3, b=4)
-```
-
-## 🔧 Configuration
-
-### Server Configuration 📝
-
-| Setting | Value | Description |
-|---------|-------|-------------|
-| **Server Name** | `Smithery MCP Server Python templates` | Display name |
-| **Transport** | `stdio` | Communication method |
-| **Entry Point** | `main.py` | Main server file |
-| **Python Version** | `>=3.12` | Minimum Python requirement |
-
-### Dependencies 📚
-
-```toml
-[project]
-name = "smithery-mcp-python-templates"
-version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
-requires-python = ">=3.12"
-dependencies = [
-    "httpx>=0.28.1",
-    "mcp[cli]>=1.9.1",
-]
-```
-
-## 🐳 Docker Deployment
-
-### Build Image 🏗️
 ```bash
-docker build -t smithery-mcp-python-template .
+docker build -t data-gov-in-mcp .
+docker run -e DATA_GOV_IN_API_KEY="your-api-key" data-gov-in-mcp
 ```
 
-### Run Container 🚀
+## Quick Start
+
+### Running the Server
+
 ```bash
-docker run -p 8000:8000 smithery-mcp-python-template
-```
+# Set your API key
+export DATA_GOV_IN_API_KEY="your-api-key-here"
 
-### Docker Configuration 🔧
-```dockerfile
-FROM python:3.12-slim
-WORKDIR /app
-COPY . .
-RUN pip install --upgrade pip && pip install -e .
-CMD ["python", "main.py"]
-```
-
-## 📈 Development Workflow
-
-```mermaid
-flowchart LR
-    A[📝 Code] --> B[🧪 Test]
-    B --> C[🏗️ Build]
-    C --> D[🚀 Deploy]
-    D --> E[📊 Monitor]
-    E --> A
-```
-
-### Development Commands 🛠️
-
-| Command | Purpose | Usage |
-|---------|---------|--------|
-| `python main.py` | Start server locally | Development testing |
-| `docker build .` | Build container | Local deployment |
-| `uv sync` | Install dependencies | Environment setup |
-
-## 🧪 Testing
-
-### Local Testing 🏠
-```bash
-# Start the MCP server
+# Run the server
 python main.py
-
-# Test with MCP Inspector
-npx @modelcontextprotocol/inspector
 ```
 
-### Command Testing 🎯
+### Testing with MCP Inspector
+
+```bash
+npx @modelcontextprotocol/inspector python main.py
+```
+
+## Configuration
+
+The server can be configured using environment variables:
+
+| Variable | Description | Default | Required |
+|----------|-------------|---------|----------|
+| `DATA_GOV_IN_API_KEY` | Your data.gov.in API key | None | ✅ Yes |
+| `DATA_GOV_IN_BASE_URL` | API base URL | `https://api.data.gov.in` | No |
+| `DATA_GOV_IN_TIMEOUT` | Request timeout in seconds | `30` | No |
+| `DATA_GOV_IN_CACHE_ENABLED` | Enable response caching | `true` | No |
+| `DATA_GOV_IN_CACHE_TTL` | Cache TTL in seconds | `3600` | No |
+| `DATA_GOV_IN_CACHE_MAX_SIZE` | Maximum cache entries | `1000` | No |
+| `DATA_GOV_IN_RATE_LIMIT_CALLS` | Max calls per period | `100` | No |
+| `DATA_GOV_IN_RATE_LIMIT_PERIOD` | Rate limit period in seconds | `60` | No |
+| `DATA_GOV_IN_MAX_RETRIES` | Maximum retry attempts | `3` | No |
+| `DATA_GOV_IN_RETRY_DELAY` | Initial retry delay in seconds | `1.0` | No |
+| `DATA_GOV_IN_LOG_LEVEL` | Logging level | `INFO` | No |
+| `DATA_GOV_IN_DEFAULT_LIMIT` | Default records per request | `10` | No |
+| `DATA_GOV_IN_MAX_LIMIT` | Maximum records per request | `100` | No |
+
+### Example .env file
+
+Create a `.env` file in the project root:
+
+```bash
+DATA_GOV_IN_API_KEY=your-api-key-here
+DATA_GOV_IN_CACHE_ENABLED=true
+DATA_GOV_IN_LOG_LEVEL=INFO
+DATA_GOV_IN_TIMEOUT=30
+```
+
+## Available Tools
+
+The server provides the following MCP tools:
+
+### 1. get_dataset
+
+Retrieve data from a specific dataset/resource.
+
+```json
+{
+  "resource_id": "9ef84268-d588-465a-a308-a864a43d0070",
+  "limit": 10,
+  "offset": 0,
+  "filters": "{\"state\": \"Maharashtra\"}"
+}
+```
+
+### 2. get_dataset_fields
+
+Get field information and schema for a dataset.
+
+```json
+{
+  "resource_id": "9ef84268-d588-465a-a308-a864a43d0070"
+}
+```
+
+### 3. paginate_dataset
+
+Retrieve a specific page of data from a dataset.
+
+```json
+{
+  "resource_id": "9ef84268-d588-465a-a308-a864a43d0070",
+  "page": 2,
+  "page_size": 20
+}
+```
+
+### 4. get_dataset_summary
+
+Get a summary of a dataset including record count and field information.
+
+```json
+{
+  "resource_id": "9ef84268-d588-465a-a308-a864a43d0070"
+}
+```
+
+### 5. filter_dataset
+
+Filter dataset records by a specific field value.
+
+```json
+{
+  "resource_id": "9ef84268-d588-465a-a308-a864a43d0070",
+  "field": "state",
+  "value": "Maharashtra",
+  "limit": 10
+}
+```
+
+### 6. get_cache_statistics
+
+Get statistics about the API response cache.
+
+```json
+{}
+```
+
+### 7. clear_cache
+
+Clear all cached API responses.
+
+```json
+{}
+```
+
+### 8. get_server_info
+
+Get information about the MCP server and its configuration.
+
+```json
+{}
+```
+
+## Usage Examples
+
+### Example 1: Retrieve Dataset Records
+
 ```python
-# Test hello command
-{"method": "tools/call", "params": {"name": "hello", "arguments": {"name": "Test"}}}
-
-# Test add command  
-{"method": "tools/call", "params": {"name": "add", "arguments": {"a": 5, "b": 3}}}
+# Get first 5 records from a dataset
+get_dataset(
+    resource_id="9ef84268-d588-465a-a308-a864a43d0070",
+    limit=5
+)
 ```
 
-## 📁 Project Structure
+### Example 2: Paginate Through Data
 
-```
-smithery-mcp-python-template/
-├── 📄 main.py              # Main server implementation
-├── 📋 pyproject.toml       # Project configuration
-├── 🐳 Dockerfile           # Container configuration  
-├── 📄 smithery.yaml        # Smithery deployment config
-├── 🔒 uv.lock             # Dependency lock file
-├── 🐍 .python-version      # Python version specification
-└── 📖 README.md           # This file
+```python
+# Get page 2 with 20 records per page
+paginate_dataset(
+    resource_id="9ef84268-d588-465a-a308-a864a43d0070",
+    page=2,
+    page_size=20
+)
 ```
 
-## 🤝 Contributing
+### Example 3: Filter Data
 
-1. 🍴 Fork the repository
-2. 🌿 Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. 💍 Commit your changes (`git commit -m 'Add amazing feature'`)
-4. 📤 Push to the branch (`git push origin feature/amazing-feature`)
-5. 🔄 Open a Pull Request
+```python
+# Get records where state is Maharashtra
+filter_dataset(
+    resource_id="9ef84268-d588-465a-a308-a864a43d0070",
+    field="state",
+    value="Maharashtra",
+    limit=10
+)
+```
 
-## 📄 License
+### Example 4: Inspect Dataset Schema
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+```python
+# Get field definitions
+get_dataset_fields(
+    resource_id="9ef84268-d588-465a-a308-a864a43d0070"
+)
+```
 
-## 🔗 Links
+## Development
 
-| Resource | URL | Description |
-|----------|-----|-------------|
-| 🏠 **Smithery Platform** | [smithery.ai](https://smithery.ai) | MCP server registry |
-| 📚 **MCP Documentation** | [modelcontextprotocol.io](https://modelcontextprotocol.io) | Protocol specification |
-| ⚡ **FastMCP** | [FastMCP Docs](https://github.com/jlowin/fastmcp) | FastMCP framework |
-| 🐳 **Docker Hub** | [Docker Repository](https://hub.docker.com) | Container registry |
+### Project Structure
 
-## 🆘 Support
+```
+data-gov-in-mcp/
+├── src/
+│   └── data_gov_in/
+│       ├── __init__.py          # Package initialization
+│       ├── api_client.py        # API client implementation
+│       ├── cache.py             # Caching layer
+│       ├── config.py            # Configuration management
+│       ├── exceptions.py        # Custom exceptions
+│       └── server.py            # MCP server implementation
+├── tests/
+│   ├── __init__.py
+│   ├── test_api_client.py       # API client tests
+│   ├── test_cache.py            # Cache tests
+│   └── test_config.py           # Configuration tests
+├── docs/                        # Documentation
+├── main.py                      # Entry point
+├── pyproject.toml              # Project configuration
+├── Dockerfile                  # Docker configuration
+└── README.md                   # This file
+```
 
-Need help? Here are your options:
+### Setting Up Development Environment
 
-- 📧 **Email**: yash.kavaiya3@gmail.com
-- 🐛 **Issues**: [GitHub Issues](https://github.com/Yash-Kavaiya/smithery-mcp-python-template/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/Yash-Kavaiya/smithery-mcp-python-template/discussions)
+```bash
+# Clone the repository
+git clone https://github.com/Yash-Kavaiya/data-gov-in-mcp.git
+cd data-gov-in-mcp
 
-## 🎉 Acknowledgments
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-- 🙏 **Anthropic** for the Model Context Protocol
-- ⚡ **FastMCP** for the excellent Python framework
-- 🏗️ **Smithery** for the deployment platform
-- 🌟 **Community** for contributions and feedback
+# Install dependencies
+uv sync
+
+# Install development dependencies
+pip install pytest pytest-cov pytest-asyncio httpx
+```
+
+## Testing
+
+The project includes comprehensive tests for all components.
+
+### Running Tests
+
+```bash
+# Run all tests
+pytest
+
+# Run with coverage
+pytest --cov=src/data_gov_in --cov-report=html
+
+# Run specific test file
+pytest tests/test_api_client.py
+
+# Run with verbose output
+pytest -v
+```
+
+### Test Coverage
+
+The test suite covers:
+- API client functionality
+- Caching layer
+- Configuration management
+- Error handling
+- Rate limiting
+- Retry logic
+
+## Docker Deployment
+
+### Building the Image
+
+```bash
+docker build -t data-gov-in-mcp:latest .
+```
+
+### Running the Container
+
+```bash
+docker run -e DATA_GOV_IN_API_KEY="your-api-key" data-gov-in-mcp:latest
+```
+
+### Using Docker Compose
+
+Create a `docker-compose.yml`:
+
+```yaml
+version: '3.8'
+services:
+  data-gov-in-mcp:
+    build: .
+    environment:
+      - DATA_GOV_IN_API_KEY=${DATA_GOV_IN_API_KEY}
+      - DATA_GOV_IN_CACHE_ENABLED=true
+      - DATA_GOV_IN_LOG_LEVEL=INFO
+    restart: unless-stopped
+```
+
+Run with:
+
+```bash
+docker-compose up -d
+```
+
+## API Documentation
+
+### Data.gov.in API
+
+This server interfaces with the data.gov.in API. Key information:
+
+- **Base URL**: `https://api.data.gov.in`
+- **Authentication**: API key required
+- **Format**: JSON
+- **Rate Limits**: Varies by API key tier
+
+### Getting an API Key
+
+1. Visit [data.gov.in](https://data.gov.in)
+2. Register for an account
+3. Navigate to "My Account"
+4. Generate your API key
+
+### Finding Resource IDs
+
+Resource IDs can be found on the data.gov.in website:
+
+1. Browse datasets at https://data.gov.in/catalogs
+2. Click on a dataset
+3. Look for "API" or "Resource ID" in the dataset details
+
+## Architecture
+
+### System Architecture
+
+```
+┌─────────────────┐
+│   AI Agent      │
+└────────┬────────┘
+         │ MCP Protocol
+┌────────▼────────┐
+│  FastMCP Server │
+└────────┬────────┘
+         │
+┌────────▼────────┐
+│  API Client     │
+│  - Rate Limit   │
+│  - Retry Logic  │
+│  - Caching      │
+└────────┬────────┘
+         │ HTTPS
+┌────────▼────────┐
+│  data.gov.in    │
+│      API        │
+└─────────────────┘
+```
+
+### Key Components
+
+1. **FastMCP Server**: Exposes MCP tools for dataset operations
+2. **API Client**: Handles HTTP requests to data.gov.in
+3. **Cache Layer**: LRU cache with TTL for performance
+4. **Rate Limiter**: Prevents API rate limit violations
+5. **Error Handler**: Comprehensive error handling and retries
+
+## Contributing
+
+Contributions are welcome! Please follow these guidelines:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Code Style
+
+- Follow PEP 8 guidelines
+- Use type hints throughout
+- Write docstrings for all public functions
+- Add tests for new features
+
+## Troubleshooting
+
+### Common Issues
+
+**Issue**: `APIKeyMissingError`
+```
+Solution: Set the DATA_GOV_IN_API_KEY environment variable
+export DATA_GOV_IN_API_KEY="your-api-key"
+```
+
+**Issue**: `RateLimitError`
+```
+Solution: The server automatically handles rate limiting. Wait for the cooldown period or adjust rate limit settings.
+```
+
+**Issue**: `ResourceNotFoundError`
+```
+Solution: Verify the resource ID is correct by checking data.gov.in
+```
+
+## Support
+
+- **Issues**: [GitHub Issues](https://github.com/Yash-Kavaiya/data-gov-in-mcp/issues)
+- **Email**: yash.kavaiya3@gmail.com
+- **Documentation**: [Wiki](https://github.com/Yash-Kavaiya/data-gov-in-mcp/wiki)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- [Anthropic](https://www.anthropic.com) for the Model Context Protocol
+- [FastMCP](https://github.com/jlowin/fastmcp) for the excellent Python framework
+- [data.gov.in](https://data.gov.in) for providing open government data
+- All contributors and users of this project
+
+## Links
+
+| Resource | URL |
+|----------|-----|
+| data.gov.in Portal | https://data.gov.in |
+| MCP Documentation | https://modelcontextprotocol.io |
+| FastMCP | https://github.com/jlowin/fastmcp |
+| Project Repository | https://github.com/Yash-Kavaiya/data-gov-in-mcp |
 
 ---
 
 <div align="center">
 
-**🚀 Ready to build amazing MCP servers? Get started now! 🚀**
+**Built with ❤️ for the open data community**
+
+[Report Bug](https://github.com/Yash-Kavaiya/data-gov-in-mcp/issues) · [Request Feature](https://github.com/Yash-Kavaiya/data-gov-in-mcp/issues)
 
 </div>

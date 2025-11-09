@@ -3,16 +3,49 @@
 startCommand:
   type: stdio
   configSchema:
-    # JSON Schema defining the configuration options for the MCP.
+    # JSON Schema defining the configuration options for the MCP server
     type: object
-    properties: {}
-    required: []
+    properties:
+      api_key:
+        type: string
+        title: "data.gov.in API Key"
+        description: "Your data.gov.in API key (get it from https://data.gov.in)"
+      cache_enabled:
+        type: boolean
+        title: "Enable Caching"
+        description: "Enable response caching for better performance"
+        default: true
+      log_level:
+        type: string
+        title: "Log Level"
+        description: "Logging level (DEBUG, INFO, WARNING, ERROR)"
+        default: "INFO"
+        enum: ["DEBUG", "INFO", "WARNING", "ERROR"]
+    required: ["api_key"]
   commandFunction: |
     (config) => ({
       "command": "python",
       "args": ["main.py"],
-      "env": {}
+      "env": {
+        "DATA_GOV_IN_API_KEY": config.api_key,
+        "DATA_GOV_IN_CACHE_ENABLED": config.cache_enabled?.toString() || "true",
+        "DATA_GOV_IN_LOG_LEVEL": config.log_level || "INFO"
+      }
     })
 
 build:
   dockerBuildPath: .
+
+metadata:
+  name: "data.gov.in MCP Server"
+  description: "Production-ready MCP server for accessing Indian government open data"
+  version: "1.0.0"
+  author: "Yash Kavaiya"
+  license: "MIT"
+  keywords:
+    - data.gov.in
+    - opendata
+    - india
+    - government
+    - mcp
+    - api

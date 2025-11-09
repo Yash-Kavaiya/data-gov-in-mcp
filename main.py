@@ -1,34 +1,33 @@
-from typing import Any
-from mcp.server import MCPServer
-# Importing the MCPServer class from mcp.server
-# Importing FastMCP for a more efficient server implementation
-from mcp.server.fastmcp import FastMCP
+"""
+data.gov.in MCP Server - Entry Point
 
-# Initialize FastMCP server
-mcp = FastMCP("Smithery MCP Server Python templates" )
+A production-ready Model Context Protocol server for accessing
+Indian government open data from data.gov.in.
 
-@mcp.command("hello")
-def hello(name: str) -> str:
-    """
-    A simple command that returns a greeting message.
-    
-    :param name: The name of the person to greet.
-    :return: A greeting message.
-    """
-    return f"Hello, {name}!"
+Features:
+- Dataset retrieval with pagination
+- Field schema inspection
+- Filtering and searching
+- Response caching
+- Rate limiting
+- Error handling and retries
+- Comprehensive logging
 
+Usage:
+    python main.py
 
-@mcp.command("add")              
-def add(a: int, b: int) -> int:
-    """
-    A command that adds two integers.
-    
-    :param a: The first integer.
-    :param b: The second integer.
-    :return: The sum of the two integers.
-    """
-    return a + b
+Environment Variables:
+    DATA_GOV_IN_API_KEY - Your data.gov.in API key (required)
+    DATA_GOV_IN_BASE_URL - API base URL (default: https://api.data.gov.in)
+    DATA_GOV_IN_CACHE_ENABLED - Enable caching (default: true)
+    DATA_GOV_IN_LOG_LEVEL - Logging level (default: INFO)
+
+Author: Data.gov.in MCP Team
+Version: 1.0.0
+License: MIT
+"""
+
+from src.data_gov_in.server import run_server
 
 if __name__ == "__main__":
-    # Initialize and run the server
-    mcp.run(transport='stdio')
+    run_server()

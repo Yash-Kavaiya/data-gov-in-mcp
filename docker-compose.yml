@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  data-gov-in-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: data-gov-in-mcp
+    environment:
+      # Required
+      - DATA_GOV_IN_API_KEY=${DATA_GOV_IN_API_KEY}
+
+      # Optional - API Configuration
+      - DATA_GOV_IN_BASE_URL=${DATA_GOV_IN_BASE_URL:-https://api.data.gov.in}
+      - DATA_GOV_IN_TIMEOUT=${DATA_GOV_IN_TIMEOUT:-30}
+
+      # Optional - Caching
+      - DATA_GOV_IN_CACHE_ENABLED=${DATA_GOV_IN_CACHE_ENABLED:-true}
+      - DATA_GOV_IN_CACHE_TTL=${DATA_GOV_IN_CACHE_TTL:-3600}
+      - DATA_GOV_IN_CACHE_MAX_SIZE=${DATA_GOV_IN_CACHE_MAX_SIZE:-1000}
+
+      # Optional - Rate Limiting
+      - DATA_GOV_IN_RATE_LIMIT_CALLS=${DATA_GOV_IN_RATE_LIMIT_CALLS:-100}
+      - DATA_GOV_IN_RATE_LIMIT_PERIOD=${DATA_GOV_IN_RATE_LIMIT_PERIOD:-60}
+
+      # Optional - Retry Configuration
+      - DATA_GOV_IN_MAX_RETRIES=${DATA_GOV_IN_MAX_RETRIES:-3}
+      - DATA_GOV_IN_RETRY_DELAY=${DATA_GOV_IN_RETRY_DELAY:-1.0}
+
+      # Optional - Logging
+      - DATA_GOV_IN_LOG_LEVEL=${DATA_GOV_IN_LOG_LEVEL:-INFO}
+
+    restart: unless-stopped
+
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+
+    # Health check
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; from src.data_gov_in import __version__; sys.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

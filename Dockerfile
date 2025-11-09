@@ -15,9 +15,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Create and set working directory
 WORKDIR /build
 
-# Copy dependency files
+# Copy dependency files and source code
 COPY pyproject.toml ./
 COPY README.md ./
+COPY src/ ./src/
 
 # Install Python dependencies
 RUN pip install --upgrade pip setuptools wheel && \

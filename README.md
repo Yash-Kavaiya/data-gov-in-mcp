@@ -7,6 +7,12 @@
 
 A **production-ready** Model Context Protocol (MCP) server for accessing Indian government open data from [data.gov.in](https://data.gov.in). This server enables AI agents and applications to seamlessly query, filter, and retrieve datasets from India's national data portal.
 
+## Test Results
+
+![MCP Server Test Results](docs/mcp-server-test-results.png)
+
+*All 8 MCP tools tested and working successfully with live data from data.gov.in API.*
+
 ## Features
 
 | Feature | Description | Status |
@@ -27,7 +33,9 @@ A **production-ready** Model Context Protocol (MCP) server for accessing Indian 
 
 - [Installation](#installation)
 - [Quick Start](#quick-start)
+- [How to Use](docs/HowToUse.md) ← **New! Step-by-step guide with screenshots**
 - [Configuration](#configuration)
+- [MCP Client Configuration](#mcp-client-configuration)
 - [Available Tools](#available-tools)
 - [Usage Examples](#usage-examples)
 - [Development](#development)
@@ -129,6 +137,138 @@ DATA_GOV_IN_CACHE_ENABLED=true
 DATA_GOV_IN_LOG_LEVEL=INFO
 DATA_GOV_IN_TIMEOUT=30
 ```
+
+## MCP Client Configuration
+
+Configure this MCP server in your preferred AI client/platform:
+
+### Claude Desktop
+
+Add to your Claude Desktop configuration file:
+
+**macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+**Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "data-gov-in": {
+      "command": "python",
+      "args": ["/path/to/data-gov-in-mcp/main.py"],
+      "env": {
+        "DATA_GOV_IN_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+}
+```
+
+### Kiro
+
+Add to `.kiro/settings/mcp.json` in your workspace or `~/.kiro/settings/mcp.json` for global config:
+
+```json
+{
+  "mcpServers": {
+    "data-gov-in": {
+      "command": "python",
+      "args": ["C:/path/to/data-gov-in-mcp/main.py"],
+      "env": {
+        "DATA_GOV_IN_API_KEY": "your-api-key-here"
+      },
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}
+```
+
+### Cursor
+
+Add to your Cursor MCP settings (`.cursor/mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "data-gov-in": {
+      "command": "python",
+      "args": ["/path/to/data-gov-in-mcp/main.py"],
+      "env": {
+        "DATA_GOV_IN_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+}
+```
+
+### Windsurf
+
+Add to your Windsurf MCP configuration:
+
+```json
+{
+  "mcpServers": {
+    "data-gov-in": {
+      "command": "python",
+      "args": ["/path/to/data-gov-in-mcp/main.py"],
+      "env": {
+        "DATA_GOV_IN_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+}
+```
+
+### Cline (VS Code Extension)
+
+Add to your Cline MCP settings file (`cline_mcp_settings.json`):
+
+```json
+{
+  "mcpServers": {
+    "data-gov-in": {
+      "command": "python",
+      "args": ["/path/to/data-gov-in-mcp/main.py"],
+      "env": {
+        "DATA_GOV_IN_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+}
+```
+
+### Using uvx (Alternative)
+
+If you prefer using `uvx` to run the server without cloning:
+
+```json
+{
+  "mcpServers": {
+    "data-gov-in": {
+      "command": "uvx",
+      "args": ["--from", "git+https://github.com/Yash-Kavaiya/data-gov-in-mcp", "python", "main.py"],
+      "env": {
+        "DATA_GOV_IN_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+}
+```
+
+### Using Docker
+
+```json
+{
+  "mcpServers": {
+    "data-gov-in": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "-e", "DATA_GOV_IN_API_KEY=your-api-key-here", "data-gov-in-mcp"]
+    }
+  }
+}
+```
+
+> **Note**: Replace `/path/to/data-gov-in-mcp/` with the actual path where you cloned the repository, and `your-api-key-here` with your data.gov.in API key.
 
 ## Available Tools
 
